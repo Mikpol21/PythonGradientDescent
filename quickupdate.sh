@@ -1,7 +1,7 @@
 #!/bin/bash
 
 msg="Quick meaningless update"
-if [ -z "$1" ]; then
+if ![ -z "$1" ]; then
     msg=$1
 fi
 
