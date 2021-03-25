@@ -1,5 +1,5 @@
 #!/bin/bash
 git add .
 git status
-git commit -m "Quick meaningless update"
+git commit -m "$1"
 git push origin main
