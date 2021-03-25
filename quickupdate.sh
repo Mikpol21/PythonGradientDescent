@@ -4,6 +4,7 @@ msg="Quick meaningless update"
 if [ -z "$1" ]; then
     msg=$1
 fi
+
 echo -e "\e[35mAdding\e[0m"
 git add .
 echo -e "\e[35mStatus:\e[0m"
