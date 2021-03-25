@@ -1,4 +1,5 @@
 #!/bin/bash
+# Quickly updates origin
 
 msg="Quick meaningless update"
 if ! [ -z "$1" ]; then
