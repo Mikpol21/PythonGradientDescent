@@ -4,7 +4,7 @@ import Haskell as fp
 
 class GradientDescent:
     tol = float(10**(-16))          # tolerance
-    N = 0                          # Maximal number of iterations
+    N = 30                          # Maximal number of iterations
     armijo = 10**(-4) - 10**(-1)    # Armijo rule
     initial_step = 10.0             # Initail Step
     ro = 0.5                        # Exp. Backtracking constant
@@ -40,14 +40,14 @@ class GradientDescent:
             if g.magnitude() < self.tol * (1.0 + initial_gradient):
                 break
         if(n == self.N):
-            print("Warning: GD achieved maximal number of iterations that equals to" + str(self.N))
+            print("Warning: GD achieved maximal number of iterations that equals to " + str(self.N))
         return x
 
 A = LA.Matrix([[3, 2], [0, 1]])
 
-def f(x): return x*A*x           # function to be optimized
-def df(x):                      # derivative of f
-    return A * x
+def f(x): return (x.toRow()*A*x.toCol())     # function to be optimized
+def df(x):                              # derivative of f
+    return (x*A).toVec()
 
 gd = GradientDescent(f, df)
 x = gd.Run(LA.vector([10.0, 10.0]))
