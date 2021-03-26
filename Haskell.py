@@ -35,3 +35,9 @@ def scanr(c, n, xs):
 
 def Map(f, xs): list(map(f, xs))
 def Zip(xs, ys): list(zip(xs, ys))
+
+def compose(f, g):
+        return lambda x : f(g(x))
+
+def composite_function(*func):         
+    return ft.reduce(compose, func, lambda x : x)

@@ -1,5 +1,6 @@
 import math
 from functools import reduce
+import PythonAdventure.Haskell
 
 class vector:
     arr = []
@@ -90,6 +91,25 @@ class Matrix:
         if isinstance(a, (int, float)):
             return self * a
         return NotImplemented
+    
+    def __add__(self, B):
+        assert isinstance(B, Matrix) & B.n == self.n & self.m == B.m
+        new_arr = self.arr
+        for i in range(self.n):
+            for j in range(self.m):
+                new_arr += B.arr[i][j]
+        return Matrix(new_arr)
+
+    def __sub__(self, B):
+        assert isinstance(B, Matrix) & (B.n == self.n & self.m == B.m)
+        new_arr = self.arr
+        for i in range(self.n):
+            for j in range(self.m):
+                new_arr -= B.arr[i][j]
+        return Matrix(new_arr)
+        
+
+        
         
 
             
@@ -99,4 +119,3 @@ c = vector([1, 2, 3])
 fib = Matrix([[1, 1], [1, 0]])
 scalar = 12.1
 scc = 3.141592
-
