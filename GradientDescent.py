@@ -1,18 +1,17 @@
-import PythonAdventure.LinearAlgebra as LA
-import PythonAdventure.Haskell as fp
+import LinearAlgebra as LA
+import Haskell as fp
 
 
 class GradientDescent:
-    start_position = LA.vector([10.0, 10.0, 10.0, 10.0])
     tol = float(10**(-16))          # tolerance
     N = 30                          # Maximal number of iterations
     armijo = 10**(-4) - 10**(-1)    # Armijo rule
     initial_step = 10.0             # Initail Step
     ro = 0.5                        # Exp. Backtracking constant
 
-    def f(self, x): return x**x           # function to be optimized
-    def df(self, x):                      # derivative of f
-        return LA.vector(fp.Map(lambda y: 2* y, x.arr))
+    def f(self, x): return  sum(x.arr)    # function to be optimized
+    def df(self, x): return LA.vector(x)  # derivative of f
+        
 
     def __init__(self, f_, df_):
         self.f = f_; self.df = df_
@@ -21,8 +20,9 @@ class GradientDescent:
     # Gradient descent with backtracking
     # Post: return x* s.t. f(x*) = min f(x)
     def Run(self, st):
-        f = self.f; df = self.df
-        x = start_position; step = initial_step
+        f = self.f; df = self.df;  armijo = self.armijo
+        x = st; step = self.initial_step
+       
         fval = f(x); g = df(x); d = (-1)*g
         initial_gradient = g.magnitude()
         n = 0
@@ -42,8 +42,13 @@ class GradientDescent:
         if(n == N):
             print("\e[31mWarning\e[0m: GD achieved maximal number of iterations that equals to" + N)
         return x
-        
-gd = GradientDescent()
-x = gd.Run(LA.vector([10.0, 10.0, 10.0, 10.0]))
-print("x* = " + x + "\n\t f(x*) = " + gd.f(x))
+
+
+def f(x): return x*x           # function to be optimized
+def df(x):                      # derivative of f
+    return LA.vector(list(map(lambda y: 2.0 * y, x.arr)))
+
+##gd = GradientDescent(f, df)
+##x = gd.Run(LA.vector([10.0, 10.0, 10.0, 10.0]))
+##print("x* = " + x + "\n\t f(x*) = " + gd.f(x))
 

@@ -1,6 +1,6 @@
 import math
 from functools import reduce
-import PythonAdventure.Haskell
+import Haskell as fp
 
 class vector:
     arr = []
