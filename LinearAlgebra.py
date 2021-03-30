@@ -24,15 +24,19 @@ class vector:
     # Scalar Multiplication (*)
     # Post: return c * v1
     def __mul__(self, c):
-        assert isinstance(c, (int, float, vector))
+        assert isinstance(c, (int, float, vector, Matrix))
         if isinstance(c, (int, float)):
             return vector(list(map(lambda x: x * c, self.arr)))
         if isinstance(c, vector):
             return reduce(lambda acc, z: acc + z[0] * z[1], list(zip(self.arr, c.arr)), 0.0)
-
+        if isinstance(c, Matrix):
+            return self.toRow().__mul__(c)
 
     def __rmul__(self, c):
-        return self.__mul__(c)
+        assert isinstance(c, (int, float, vector, Matrix))
+        if isinstance(c, (int, float, vector)):
+            return self.__mul__(c)
+        return c * self.toCol()
     # Substraction
     # Post: return v1 - v2
     def __sub__(self, v2):
@@ -45,6 +49,7 @@ class vector:
         return Matrix([self.arr])
     def toCol(self):
         return Matrix(list(map(lambda x: [x], self.arr)))
+        
 
 
 class Matrix:
@@ -82,20 +87,17 @@ class Matrix:
             B = a.toCol()
         else:
             B = a
-        B = B.T()
         assert self.m == B.n
+        B = B.T()
         return Matrix(list(map(lambda xs : list(map(lambda ys: vector(xs) * vector(ys), self.arr)), B.arr)))
 
     def __rmul__(self, a):
-        assert isinstance(a, (int, float, Matrix))
+        assert isinstance(a, (int, float, vector, Matrix))
         if isinstance(a, (int, float)):
             return self * a
-        if isinstance(a, Matrix):
-            return __mul__(a, self.toRow()) 
+        if isinstance(a, vector):
+            return __mul__(a.toRow(), self) 
 
-        
-        
-    
     def __add__(self, B):
         assert isinstance(B, Matrix) & B.n == self.n & self.m == B.m
         new_arr = self.arr
