@@ -1,10 +1,13 @@
 import LinearAlgebra as LA
 import Haskell as fp
+import math
+
+
 
 
 class GradientDescent:
     tol = float(10**(-10))          # tolerance
-    N = 30                          # Maximal number of iterations
+    N = 10                          # Maximal number of iterations
     armijo = 10**(-4) - 10**(-1)    # Armijo rule
     initial_step = 10.0             # Initial Step
     ro = 0.5                        # Exp. Backtracking constant
@@ -43,14 +46,41 @@ class GradientDescent:
             print("Warning: GD achieved maximal number of iterations that equals to " + str(self.N))
         return x
 
-A = LA.Matrix([[3, 2], [0, 1]])
-vec = LA.vector([1, 2, 3])
 
-def f(x): return (x - vec) * (x + vec)     # function to be optimized
-def df(x):                              # derivative of f
-    return 2 * x
+ys = []
+yfile = open("vectorY", "r")
+for y in yfile:
+    ys.append(int(y))
+yfile.close()
 
+xss = []
+xfile = open("matrixX", "r")
+for line in xfile.readlines():
+    xs = []
+    for x in line.split('\t'):
+        xs.append(float(x))
+    xss.append(xs)
+xfile.close() 
+print(str(len(xss)))  
+
+N = 2000
+
+def f(w):
+    ret = 0.0
+    for i in range(N):
+        x = LA.vector(xss[i])
+        ret += math.exp(-ys[i] * (w * x))
+    return ret
+
+def df(w):
+    ret = LA.vector([0.0]*137)
+    for i in range(N):
+        x = LA.vector(xss[i])
+        ret += math.exp(-ys[i] * (w * x)) * (-ys[i])*x
+    return ret
+
+zero = LA.vector([0.0]*137)
 gd = GradientDescent(f, df)
-x = gd.Run(LA.vector([10.0, 10.0, 10.0]))
-print("x* = " + str(x) + "\n\t f(x*) = " + str(gd.f(x)))
-
+x = gd.Run(zero)
+print(str(x))
+print(str(df(x)))
