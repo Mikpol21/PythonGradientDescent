@@ -1,15 +1,16 @@
 import LinearAlgebra as LA
 import Haskell as fp
 import math
-
+import random
+#import np.random.uniform
 
 
 
 class GradientDescent:
     tol = float(10**(-10))          # tolerance
-    N = 10                          # Maximal number of iterations
+    N = 300                          # Maximal number of iterations
     armijo = 10**(-4) - 10**(-1)    # Armijo rule
-    initial_step = 10.0             # Initial Step
+    initial_step = 10000.0             # Initial Step
     ro = 0.5                        # Exp. Backtracking constant
 
     def f(self, x): return  sum(x.arr)    # function to be optimized
@@ -31,12 +32,14 @@ class GradientDescent:
         n = 0
         while n < self.N:
             x_new = x + step*d
+            #print(str(x_new))
+            print(str(f(x_new)))
             fval_new = f(x_new)
             while fval_new > fval + armijo*step*(g*d):
                 step = step * self.ro
                 x_new = x + step*d
                 fval_new = f(x_new)
-            ++n
+            n += 1
             g_new = df(x_new); d_new = (-1) * g_new
             step *= (g*d)/(g_new*d_new)
             g = g_new; d = d_new; x = x_new; fval = fval_new
@@ -69,18 +72,33 @@ def f(w):
     ret = 0.0
     for i in range(N):
         x = LA.vector(xss[i])
-        ret += math.exp(-ys[i] * (w * x))
+        try:
+            exp = math.exp(-ys[i] * (w * x))
+        except OverflowError:
+            exp = float('inf')
+        ret += exp
     return ret
 
 def df(w):
     ret = LA.vector([0.0]*137)
     for i in range(N):
         x = LA.vector(xss[i])
-        ret += math.exp(-ys[i] * (w * x)) * (-ys[i])*x
+        try:
+            exp = math.exp(-ys[i] * (w * x))
+        except OverflowError:
+            exp = float('inf')
+        ret += exp * (-ys[i])*x
     return ret
 
-zero = LA.vector([0.0]*137)
+
+def good(w):
+    cnt = 0
+    for i in range(N):
+        if  ys[i] * w * LA.vector(xss[i]) > 0:
+            cnt += 1
+    return str(float(cnt)*100.0/float(N)) + "%"
+zero = LA.vector([0.00]*137)
 gd = GradientDescent(f, df)
 x = gd.Run(zero)
-print(str(x))
-print(str(df(x)))
+#print(str(x))
+print(good(x))
