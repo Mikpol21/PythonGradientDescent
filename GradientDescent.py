@@ -3,7 +3,7 @@ import Haskell as fp
 
 
 class GradientDescent:
-    tol = float(10**(-8))          # tolerance
+    tol = float(10**(-10))          # tolerance
     N = 30                          # Maximal number of iterations
     armijo = 10**(-4) - 10**(-1)    # Armijo rule
     initial_step = 10.0             # Initial Step
@@ -29,8 +29,7 @@ class GradientDescent:
         while n < self.N:
             x_new = x + step*d
             fval_new = f(x_new)
-            #print(str(x) + " " + str(fval))
-            while fval_new >= fval + armijo*step*(g*d):
+            while fval_new > fval + armijo*step*(g*d):
                 step = step * self.ro
                 x_new = x + step*d
                 fval_new = f(x_new)
