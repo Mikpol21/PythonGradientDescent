@@ -8,38 +8,37 @@ import random
 
 class GradientDescent:
     tol = float(10**(-10))          # tolerance
-    N = 300                          # Maximal number of iterations
+    N = 3000                          # Maximal number of iterations
     armijo = 10**(-4) - 10**(-1)    # Armijo rule
-    initial_step = 10000.0             # Initial Step
+    initial_step = 15.0             # Initial Step
     ro = 0.5                        # Exp. Backtracking constant
 
     def f(self, x): return  sum(x.arr)    # function to be optimized
     def df(self, x): return LA.vector(x)  # derivative of f
-        
+    def good(self, x): return "-%"
 
-    def __init__(self, f_, df_):
-        self.f = f_; self.df = df_
+    def __init__(self, f_, df_, good_):
+        self.f = f_; self.df = df_; self.good = good_
 
 
     # Gradient descent with backtracking
     # Post: return x* s.t. f(x*) = min f(x)
     def Run(self, st):
         f = self.f; df = self.df;  armijo = self.armijo
-        x = st; step = self.initial_step
+        x = st; step = self.initial_step; good = self.good
        
         fval = f(x); g = df(x); d = (-1)*g
         initial_gradient = g.magnitude()
         n = 0
         while n < self.N:
             x_new = x + step*d
-            #print(str(x_new))
-            print(str(f(x_new)))
             fval_new = f(x_new)
             while fval_new > fval + armijo*step*(g*d):
                 step = step * self.ro
                 x_new = x + step*d
                 fval_new = f(x_new)
             n += 1
+            print(str(n) + ": " + str(f(x_new)) + " , " + good(x_new))
             g_new = df(x_new); d_new = (-1) * g_new
             step *= (g*d)/(g_new*d_new)
             g = g_new; d = d_new; x = x_new; fval = fval_new
@@ -64,7 +63,6 @@ for line in xfile.readlines():
         xs.append(float(x))
     xss.append(xs)
 xfile.close() 
-print(str(len(xss)))  
 
 N = 2000
 
@@ -98,7 +96,7 @@ def good(w):
             cnt += 1
     return str(float(cnt)*100.0/float(N)) + "%"
 zero = LA.vector([0.00]*137)
-gd = GradientDescent(f, df)
+gd = GradientDescent(f, df, good)
 x = gd.Run(zero)
 #print(str(x))
 print(good(x))
