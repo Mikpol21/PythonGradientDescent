@@ -8,7 +8,7 @@ import random
 
 class GradientDescent:
     tol = float(10**(-10))          # tolerance
-    N = 3000                          # Maximal number of iterations
+    N = 300                          # Maximal number of iterations
     armijo = 10**(-4) - 10**(-1)    # Armijo rule
     initial_step = 15.0             # Initial Step
     ro = 0.5                        # Exp. Backtracking constant
