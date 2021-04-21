@@ -57,7 +57,7 @@ def magnitude(w):
 
 class GradientDescent:
     tol = np.longdouble(10**(-8))          # tolerance
-    N = 200                          # Maximal number of iterations
+    N = 30                          # Maximal number of iterations
     armijo = 10**(-4) - 10**(-1)    # Armijo rule
     initial_step = 15.0             # Initial Step
     ro = 0.5                        # Exp. Backtracking constant
@@ -95,7 +95,7 @@ class GradientDescent:
             n += 1
             print(str(n) + ": " + str(f(x_new)) + " , " + good(x_new))
             g_new = df(x_new); 
-            d_new = self.Newton(x_new, g_new)
+            d_new = self.classic(g_new)
             step *= (g.dot(d))/(g_new.dot(d_new))
             g = g_new; d = d_new; x = x_new; fval = fval_new
             if magnitude(g) < self.tol * (1.0 + initial_gradient):
@@ -108,3 +108,4 @@ zero = np.zeros(137)
 F = function()
 gd = GradientDescent(F)
 x = gd.Run(zero)
+print(x)
