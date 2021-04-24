@@ -5,3 +5,4 @@ Implemented Libraries:
 
     -- Linear Algebra   {Matrices, vectors and soon algorithms}
     -- Haskell          {My favourite functional features}
+    -- Gradient Descent {}
