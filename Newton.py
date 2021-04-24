@@ -14,13 +14,13 @@ class GradientDescent:
     ro = 0.5                        # Exp. Backtracking constant
 
     def __init__(self, func):
-        self.f = func.f; self.df = func.df; 
+        self.f = func.f; self.df = func.df;
         self.good = func.good; self.Hessian = func.H
 
 
     def classic(self, g):
         return (-1) * g
-    
+
     def CD(self, g_n, g, d):
         return np.double(-1)*g_n + (g_n - g).dot(g_n)/g.dot(g) * d
 
@@ -30,13 +30,14 @@ class GradientDescent:
     # Gradient descent with backtracking
     # Post: return x* s.t. f(x*) = min f(x)
     def Run(self, st):
-        return self.Run_(st, "Classic")
-    def Run(self, st, type):
+        return self.Run(st, "Classic")
+    def Run(self, st, type, n):
         toPlot = open("VacationProject/toPlot.csv", "w")
         toPlot.write("Iteration;Accuracy\n")
+        self.N = n
         f = self.f; df = self.df;  armijo = self.armijo
         x = st; step = self.initial_step; good = self.good
-       
+
         fval = f(x); g = df(x); d = (-1)*g
         initial_gradient = magnitude(g)
         n = 0
@@ -66,10 +67,11 @@ class GradientDescent:
             print("Warning: GD achieved maximal number of iterations that equals to " + str(self.N))
         return x
 
+"""
 zero = np.zeros(137)
 F = loss.function1()
 gd = GradientDescent(F)
-x = gd.Run(zero, "N")
+x = gd.Run(zero, "N", 5)
 print("Accuracy: " + str(F.good(x)*100) + "%")
 f = open("VacationProject/result.out", "w")
 f.write("[")
@@ -80,3 +82,4 @@ for i in range(137):
     else:
         f.write(" ,\n")
 f.close()
+"""
