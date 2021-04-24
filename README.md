@@ -1,8 +1,6 @@
-# PythonAdventure
-### Fooling around with python to eventually implement ANN
+# Challange project
 
-Implemented Libraries:
-
-    -- Linear Algebra   {Matrices, vectors and soon algorithms}
-    -- Haskell          {My favourite functional features}
-    -- Gradient Descent {}
+Implemented:
+    plotter         {Comparision of different optimizing methods}
+    Newton          {Implementation of Conjugate / Gradient Descent and Newton's method}
+    loss_fucntions  {examples of loss_functions}
