@@ -8,15 +8,21 @@ import time
 zero = np.zeros(137)
 F = loss.function1()
 gd = Newton.GradientDescent(F)
-number_of_I = 8
+number_of_I = 10
 
-for type in ["Classic", "C", "N"]:
+for type in ["Gradient", "Conjugate", "Newton"]:
     start = time.perf_counter()
     x = gd.Run(zero, type, number_of_I)
     end = time.perf_counter()
-    print("Accuracy: " + str(F.good(x)*100) + "% in " + str(round(end - start, 3)) + "sec")
+    print(type + "\n  Accuracy:\t" + str(F.good(x)*100) + "%\n  Time:\t" + str(round(end - start, 3)) + "sec")
     Graph = pd.read_csv("VacationProject/toPlot.csv", sep=";")
-    plt.plot(Graph.Iteration, Graph.Accuracy, label = "Conjugate Gradient method")
+    if type == "Classic":
+        L = "Gradient Descent"
+    elif type == "N":
+        L = "Newton's method"
+    else:
+        L = "Conjugate Descent"
+    plt.plot(Graph.Iteration, Graph.Accuracy, label = L)
 
 
 plt.title("Optimizing loss function")
