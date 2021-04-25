@@ -51,6 +51,10 @@ class function1:
         return (float(cnt)/float(self.N))
 
 
+
+"""
+    Not working
+"""
 class function2:
     N = 2000
     ys = []

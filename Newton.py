@@ -14,8 +14,10 @@ class GradientDescent:
     ro = 0.5                        # Exp. Backtracking constant
 
     def __init__(self, func):
-        self.f = func.f; self.df = func.df;
-        self.good = func.good; self.Hessian = func.H
+        self.f = func.f
+        self.df = func.df
+        self.good = func.good
+        self.Hessian = func.H
 
 
     def classic(self, g):
@@ -29,9 +31,7 @@ class GradientDescent:
 
     # Gradient descent with backtracking
     # Post: return x* s.t. f(x*) = min f(x)
-    def Run(self, st):
-        return self.Run(st, "Classic")
-    def Run(self, st, type, n):
+    def Run(self, st, type = "Classic", n = 30):
         toPlot = open("VacationProject/toPlot.csv", "w")
         toPlot.write("Iteration;Accuracy\n")
         self.N = n
@@ -50,7 +50,7 @@ class GradientDescent:
                 fval_new = f(x_new)
             n += 1
             toPlot.write(str(n) + ";"+ str(good(x_new)) + "\n")
-            g_new = df(x_new);
+            g_new = df(x_new)
             if type in ["Newton", "N", "newton", "n"]:
                 d_new = self.Newton(x_new, g_new)
             elif type in ["Conjugate", "C", "c", "conjugate"]:
@@ -67,7 +67,7 @@ class GradientDescent:
             print("Warning: GD achieved maximal number of iterations that equals to " + str(self.N))
         return x
 
-"""
+
 zero = np.zeros(137)
 F = loss.function1()
 gd = GradientDescent(F)
@@ -82,4 +82,4 @@ for i in range(137):
     else:
         f.write(" ,\n")
 f.close()
-"""
+
